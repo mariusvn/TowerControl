@@ -3,8 +3,23 @@
 	"frequency": 121.95,
 	"map": [
 		[
-			{"x": 100, "y": 100},
-			{"x": 200, "y": 200}
+			{"x": 100, "y": 100}
 		]
+	],
+    	"runways": [
+		{
+			"name": ["30R", "12L"],
+			"length": 8530,
+			"width": 164,
+			"heading": 124,
+			"screen_pos": {"x": 200, "y": 220}
+		},
+		{
+			"name": ["30L", "12R"],
+			"length": 3609,
+			"width": 98,
+			"heading": 124,
+			"screen_pos": {"x": 170, "y": 500}
+		}
 	]
 }

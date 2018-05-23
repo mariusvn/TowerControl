@@ -1,6 +1,7 @@
-let app = undefined;
-let map_container = undefined;
-let sector = undefined;
+let app = undefined;		//PIXIJS
+let map_container = undefined;	//map content holder (PIXI container)
+let sector = undefined;		//json map content
+let drag = false;		//is draggin'
 
 WebFont.load({
 	google: {
@@ -11,6 +12,30 @@ WebFont.load({
 	}
 });
 
+Math.radians = function(degrees) {
+	return degrees * Math.PI / 180;
+};
+
+Math.degrees = function(radians) {
+	return radians * 180 / Math.PI;
+};
+
+function createDragAndDropFor(target){
+	target.interactive = true;
+	$("canvas").mousedown(function(){
+		console.log("mousedown");
+		drag = target; 
+	})
+	$("canvas").mouseup(function(){
+		drag = false;
+	})
+	target.on("mousemove", function(e){
+		if(drag){
+			drag.position.x += e.data.originalEvent.movementX;
+			drag.position.y += e.data.originalEvent.movementY;
+		}
+	})
+}
 
 function start_pixijs()
 {
@@ -34,21 +59,22 @@ function start_pixijs()
 
 function load_sector(airport_icao)
 {
+	console.log("loading sector ...");
 	$.getJSON('Sectors/' + airport_icao + '.json', function(json) {
 		sector = json;
 		draw_sector();
 		console.log(json);
+		draw_runways();
+		console.log("Sector loaded!");
+		createDragAndDropFor(map_container);
 	})
 }
 
 function draw_sector()
 {
-	console.log("draw sectors");
 	if (!sector)
 		return;
-	console.log("there is sector");
 	for (var i = 0; i < sector.map.length; i++) {
-		console.log("line");
 		var line = sector.map[i];
 		var line_g = new PIXI.Graphics();
 		line_g.lineStyle(1, 0xffffff, 1);
@@ -58,6 +84,34 @@ function draw_sector()
 			console.log(line[j].x + ", " + line[j].y)
 		}
 		map_container.addChild(line_g);
+	}
+}
+
+function draw_runway(runway)
+{
+	let length = runway.length / 12;
+	let pos_a = runway.screen_pos;
+	let angle_a = runway.heading;
+	angle_a -= 90;
+	if (angle_a > 360)
+		angle_a %= 360;
+	if (angle_a < 0)
+		angle_a = 360 - angle_a;
+	let AC = Math.cos(Math.radians(angle_a)) * length;
+	let CB = Math.cos(Math.radians(180 - (angle_a + 90))) * length;
+	let pos_b = {x: pos_a.x + AC, y: pos_a.y + CB};
+	let line = new PIXI.Graphics();
+	line.lineStyle(2, 0xffffff, 1);
+	line.moveTo(pos_a.x, pos_a.y);
+	line.lineTo(pos_b.x, pos_b.y);
+	map_container.addChild(line);
+}
+
+function draw_runways()
+{
+	for (let i = 0; i < sector.runways.length; i++) {
+		console.log("drawing runway " + sector.runways[i].name[0] + "/" + sector.runways[i].name[1]);
+		draw_runway(sector.runways[i]);
 	}
 }
 
@@ -82,7 +136,7 @@ function draw_gui(ctrl_pos)
 
 function init()
 {
-	load_sector("LFMT");
 	start_pixijs();
+	load_sector("LFMT");
 	draw_gui("LFMT_GND");
 }
