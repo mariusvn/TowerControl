@@ -48,7 +48,8 @@ function start_pixijs()
 	app = new PIXI.Application({
 		width: window.innerWidth,
 		height: window.innerHeight - 4, 
-		transparent: true
+		transparent: true,
+		antialias: true
 	});
 	window.addEventListener("resize", function() {
 		app.renderer.resize(window.innerWidth, window.innerHeight - 4);
@@ -68,6 +69,7 @@ function load_sector(airport_icao)
 		draw_runways(map_container, sector);
 		console.log("Sector loaded!");
 		createDragAndDropFor(map_container);
+		draw_gui(sector.sector_name, app);
 	})
 }
 
@@ -75,5 +77,4 @@ function init()
 {
 	start_pixijs();
 	load_sector("LFMT");
-	draw_gui("LFMT_GND", app);
 }

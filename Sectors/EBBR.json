@@ -1,0 +1,33 @@
+{
+	"sector_name": "EBBR_TWR",
+	"frequency": 118.6,
+	"map": [
+		[
+			{"x": 200, "y": 220}
+		]
+	],
+    	"runways": [
+		{
+			"name": ["07L", "25R"],
+			"length": 11936,
+			"width": 148,
+			"heading": 245,
+			"screen_pos": {"x": 910, "y": 420}
+		},
+		{
+			"name": ["07R", "25L"],
+			"length": 10535,
+			"width": 148,
+			"heading": 250,
+			"screen_pos": {"x": 950, "y": 470}
+		},
+		{
+			"name": ["02", "20"],
+			"length": 9800,
+			"width": 164,
+			"heading": 194,
+			"screen_pos": {"x": 900, "y": 415}
+		}
+	],
+	"zoom_factor": 100
+}

@@ -34,9 +34,9 @@ export function draw_sector(sector, map_container)
 	}
 }
 
-function draw_runway(runway, map_container)
+function draw_runway(runway, map_container, sector)
 {
-	let length = runway.length / 12;
+	let length = runway.length / sector.zoom_factor;
 	let pos_a = runway.screen_pos;
 	let angle_a = runway.heading;
 	angle_a -= 90;
@@ -58,6 +58,6 @@ export function draw_runways(map_container, sector)
 {
 	for (let i = 0; i < sector.runways.length; i++) {
 		console.log("drawing runway " + sector.runways[i].name[0] + "/" + sector.runways[i].name[1]);
-		draw_runway(sector.runways[i], map_container);
+		draw_runway(sector.runways[i], map_container, sector);
 	}
 }
