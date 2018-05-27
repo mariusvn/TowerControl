@@ -1,4 +1,5 @@
 import {draw_gui, draw_sector, draw_runways} from './gui.js';
+import {coordinates, get_screen_pos, set_screen_properties} from './geo.js';
 
 let app = undefined;		//PIXIJS
 let map_container = undefined;	//map content holder (PIXI container)
